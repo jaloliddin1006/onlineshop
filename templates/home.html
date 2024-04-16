@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %} Home {% endblock title %}
+
+
+
+{% block content %}
+
+Home Page
+<p>
+    {% if user.is_authenticated %}
+        Welcome, {{ user.username }}!
+           <p><a href="{% url 'accounts:logout' %}">Logout</a></p>
+         <p><a href="{% url 'accounts:update' %}">Update</a></p>
+    {% else %}
+        Welcome, guest!
+        <p><a href="{% url 'accounts:login' %}">Login</a></p>
+        <p><a href="{% url 'accounts:register' %}">Register</a></p>
+    {% endif %}
+</p>
+
+{% endblock content %}
