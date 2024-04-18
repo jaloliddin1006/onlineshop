@@ -1,5 +1,5 @@
 from django import forms
-from django.forms.widgets import TextInput, PasswordInput
+from django.forms.widgets import TextInput, PasswordInput, EmailInput
 from .models import User, UserResetPasswordCode
 from django.contrib.auth.forms import PasswordResetForm
 from apps.base.utilits import VerifyEmailCode
@@ -46,13 +46,13 @@ class RegisterUserForm(forms.ModelForm):
 
 
 class LoginForm(forms.Form):
-    username = forms.CharField(widget=TextInput(attrs={'placeholder': "Username..."}), required=True)
+    email = forms.EmailField(widget=EmailInput(attrs={'placeholder': "Email..."}), required=True)
     password = forms.CharField(widget=PasswordInput(attrs={'placeholder': "password..."}), required=False)
 
     def clean(self):
-        username = self.cleaned_data.get('username')
+        email = self.cleaned_data.get('email')
         password = self.cleaned_data.get('password')
-        if not username or not password:
+        if not email or not password:
             raise forms.ValidationError("Bo'sh bo'lmasligi lozim")
 
         return self.cleaned_data

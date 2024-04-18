@@ -27,6 +27,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # build apps
+    'mptt',
+    'colorfield',
+
 
     ## my apps
     'apps.accounts',
