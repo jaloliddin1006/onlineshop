@@ -1,12 +1,12 @@
 from django.db import models
-
 from apps.accounts.models import User
 from apps.base.models import BaseModel
 from mptt.models import MPTTModel, TreeForeignKey
 from django.utils.text import slugify
 from colorfield.fields import ColorField
 from django.db.models import Avg
-
+from django.utils.safestring import mark_safe
+from PIL import Image
 
 COLOR_PALETTE = [
         ("#FFFFFF", "white", ),
@@ -51,6 +51,11 @@ class Category(BaseModel, MPTTModel):
         self.slug = slugify(self.name)
         super().save(*args, **kwargs)
 
+    class Meta:
+        verbose_name = 'category'
+        verbose_name_plural = 'categories'
+        # ordering = ['created_at', 'name']
+
 
 class Brand(BaseModel):
     name = models.CharField(max_length=50)
@@ -84,11 +89,12 @@ class Tag(BaseModel):
 
 class Product(BaseModel):
     title = models.CharField(max_length=150)
-    slug = models.SlugField(max_length=150, unique=True)
+    slug = models.SlugField(max_length=150, unique=True, blank=True)
     description = models.TextField()
     status = models.CharField(max_length=10, choices=PRODUCT_STATUS_CHOICES, default='NEW')
     percentage = models.FloatField(default=0)
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
+    tags = models.ManyToManyField(Tag, blank=True)
 
     def __str__(self):
         return self.title
@@ -135,14 +141,36 @@ class ProductImage(BaseModel):
     def __str__(self):
         return f"{self.product}"
 
+    @property
+    def image_url(self):
+        return self.image.url
+
+    @property
+    def get_image(self):
+        if not self.image.url:
+            return "No Image"
+        return mark_safe('<img src="{}" height="100"/>'.format(self.image.url))
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        img = Image.open(self.image.path)
+        img.save(self.image.path, quality=50)
+
 
 class Review(BaseModel):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='reviews')
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='reviews')
-    rating = models.CharField(max_length=2, choices=RATING_CHOICES)
+    rate = models.IntegerField(choices=RATING_CHOICES, default=1)
     comment = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return f"{self.product} | {self.user} | {self.rating}"
+        return f"{self.product} | {self.user} | {self.rate}"
 
+    class Meta:
+        verbose_name = 'Review'
+        verbose_name_plural = "Reviews"
+
+    @property
+    def stars_percent(self):
+        return round(int(self.rate * 100 / 5), 1)
 
