@@ -90,6 +90,7 @@ class Tag(BaseModel):
 class Product(BaseModel):
     title = models.CharField(max_length=150)
     slug = models.SlugField(max_length=150, unique=True, blank=True)
+    categories = models.ManyToManyField(Category, blank=True)
     description = models.TextField()
     status = models.CharField(max_length=10, choices=PRODUCT_STATUS_CHOICES, default='NEW')
     percentage = models.FloatField(default=0)
