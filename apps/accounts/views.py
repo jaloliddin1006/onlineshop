@@ -5,15 +5,6 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from datetime import datetime
 from apps.base.utilits import send_mail_code
-from apps.base.utilits import VerifyEmailCode
-
-from django.urls import reverse_lazy
-
-from django.utils.encoding import smart_bytes
-
-from django.utils.http import urlsafe_base64_encode
-from django.core.mail import send_mail
-from django.contrib.auth.tokens import PasswordResetTokenGenerator
 
 
 from .models import User, UserResetPasswordCode
@@ -34,7 +25,7 @@ class UserRegisterView(View):
         if user_form.is_valid():
             user_form.save()
             messages.success(request, "Tizimdam muvaffaqiyatli ro'yxatdan o'tdingiz.")
-            return redirect('index_url')
+            return redirect('home')
         
         messages.error(request, "Tizindan ro'yxatdan o'ta olmadingiz!!!")
         context = {
@@ -61,7 +52,7 @@ class LoginView(View):
             if user is not None:
                 login(request, user)
                 messages.success(request, "Siz tizimga muvaffaqiyatli kirdingiz.")
-                return redirect('index_url')
+                return redirect('home')
 
             messages.error(request, "Login yoki parol noto'g'ri!!!!")
             return render(request, 'accounts/login.html', {'form':user_form})
@@ -74,7 +65,7 @@ class LogoutView(View):
 
     def get(self, request):
         logout(request)
-        return redirect('index_url')
+        return redirect('home')
 
 
 class UpdateUserView(View):
@@ -94,7 +85,7 @@ class UpdateUserView(View):
             user_form.save()
 
             messages.success(request, "Muvaffaqiyatli yangilandi.")
-            return redirect('index_url')
+            return redirect('home')
 
         messages.error(request, user_form.errors)
         return render(request, 'accounts/update-profile.html', {'form': user_form})

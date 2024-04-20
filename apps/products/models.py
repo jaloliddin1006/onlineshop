@@ -90,12 +90,13 @@ class Tag(BaseModel):
 class Product(BaseModel):
     title = models.CharField(max_length=150)
     slug = models.SlugField(max_length=150, unique=True, blank=True)
-    categories = models.ManyToManyField(Category, blank=True)
+    categories = models.ManyToManyField(Category, blank=True, related_name='products')
+    mini_desc = models.TextField()
     description = models.TextField()
     status = models.CharField(max_length=10, choices=PRODUCT_STATUS_CHOICES, default='NEW')
     percentage = models.FloatField(default=0)
-    brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
-    tags = models.ManyToManyField(Tag, blank=True)
+    brand = models.ForeignKey(Brand, on_delete=models.CASCADE, related_name='products')
+    tags = models.ManyToManyField(Tag, blank=True, related_name='products')
 
     def __str__(self):
         return self.title
@@ -116,6 +117,11 @@ class Product(BaseModel):
             discount = (100 - self.percentage) / 100 * product_price
             return round(discount, 2)
         return 0
+
+    @property
+    def get_reviews_count(self):
+        reviews = self.reviews.count()
+        return reviews
 
     @property
     def get_avg_rating(self):
@@ -155,6 +161,8 @@ class ProductImage(BaseModel):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         img = Image.open(self.image.path)
+        o_size = (405, 500)
+        img.thumbnail(o_size)
         img.save(self.image.path, quality=50)
 
 

@@ -15,7 +15,7 @@ class CategoryAdmin(DraggableMPTTAdmin):
     # list_editable = ('is_active',)
 
     def display_icon(self, obj):
-        return mark_safe('<img src="%s" width="50" height="50" />' % obj.icon.url)
+        return mark_safe('<img src="%s" width="50" />' % obj.icon.url)
 
     display_icon.allow_tags = True
     display_icon.short_description = 'Icon'
@@ -29,7 +29,8 @@ class BrandAdmin(admin.ModelAdmin):
     readonly_fields = ('id', 'display_icon')
 
     def display_icon(self, obj):
-        return mark_safe('<img src="%s" width="100" height="100" />' % obj.icon.url)
+        # return mark_safe('<img src="%s" width="100" height="100" />' % obj.icon.url)
+        return mark_safe('<img src="{}" width="100" height="100" />'.format(obj.icon.url))
 
     display_icon.allow_tags = True
     display_icon.short_description = 'Icon'
@@ -37,8 +38,8 @@ class BrandAdmin(admin.ModelAdmin):
 
 @admin.register(Color)
 class ColorAdmin(admin.ModelAdmin):
-    list_display = ('name', 'code', 'created_at', 'id')
-    list_editable = ('code',)
+    list_display = ('name', 'code', 'created_at', 'id', 'is_active')
+    list_editable = ('code', 'is_active')
 
 
 @admin.register(Tag)
