@@ -36,10 +36,10 @@
                                     <div class="sort-by-dropdown">
                                         <ul>
                                             <li><a class="active" href="?page_size=2">2</a></li>
-                                            <li><a href="?page_size=100">100</a></li>
-                                            <li><a href="?page_size=150">150</a></li>
-                                            <li><a href="?page_size=200">200</a></li>
-                                            <li><a href="?page_size=all">All</a></li>
+                                            <li><a href="?page_size=100&search={{ search }}">100</a></li>
+                                            <li><a href="?page_size=150&search={{ search }}">150</a></li>
+                                            <li><a href="?page_size=200&search={{ search }}">200</a></li>
+                                            <li><a href="?page_size=all&search={{ search }}">All</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -55,7 +55,8 @@
                                     <div class="sort-by-dropdown">
                                         <ul>
                                             <li><a class="active" href="#">Featured</a></li>
-                                            <li><a href="#">Price: Low to High</a></li>
+                                            <li><a href="?sort_by=created_at&search={{ search }}">Yaratilgan sana bo'yicha</a></li>
+                                            <li><a href="?sort_by=title&search={{ search }}">Nomi bo'yicha</a></li>
                                             <li><a href="#">Price: High to Low</a></li>
                                             <li><a href="#">Release Date</a></li>
                                             <li><a href="#">Avg. Rating</a></li>
@@ -195,24 +196,24 @@
                         <div class="pagination-area mt-15 mb-md-5 mb-lg-0">
                             <nav aria-label="Page navigation example">
                                 <ul class="pagination justify-content-start">
-                                    
+
                                 {% if products.has_previous %}
-                                    <li class="page-item"><a class="page-link" href="?page={{ products.previous_page_number }}&page_size={{ page_size }}"><i class="fa fa-angle-left"></i> </a></li>
+                                    <li class="page-item"><a class="page-link" href="?page={{ products.previous_page_number }}&page_size={{ page_size }}&search={{ search }}"><i class="fa fa-angle-left"></i> </a></li>
                                 {% else %}
                                     <li class="page-item disabled"><a class="page-link disabled" href=""><i class="fa fa-angle-left"></i> </a></li>
                                 {% endif %}
-                                
+
                                     {% for page in products.paginator.page_range %}
                                         {% if products.number ==  page %}
-                                        <li class="page-item active"><a class="page-link" href="?page={{page}}&page_size={{ page_size }}">{{page}}</a></li>
+                                        <li class="page-item active"><a class="page-link" href="?page={{page}}&page_size={{ page_size }}&search={{ search }}">{{page}}</a></li>
                                         {% else %}
-                                        <li class="page-item "><a class="page-link" href="?page={{page}}&page_size={{ page_size }}">{{page}}</a></li>
-                                            
+                                        <li class="page-item "><a class="page-link" href="?page={{page}}&page_size={{ page_size }}&search={{ search }}">{{page}}</a></li>
+
                                         {% endif %}
                                     {% endfor %}
-                                   
+
                                 {% if products.has_next %}
-                                    <li class="page-item"><a class="page-link" href="?page={{ products.next_page_number }}&page_size={{ page_size }}"><i class="fa fa-angle-right"></i> </a></li>
+                                    <li class="page-item"><a class="page-link" href="?page={{ products.next_page_number }}&page_size={{ page_size }}&search={{ search }}"><i class="fa fa-angle-right"></i> </a></li>
                                 {% else %}
                                     <li class="page-item disabled"><a class="page-link disabled" href=""><i class="fa fa-angle-right"></i> </a></li>
                                 {% endif %}
@@ -220,6 +221,7 @@
                             </nav>
                         </div>
                     </div>
+                
                     <div class="col-lg-3 primary-sidebar sticky-sidebar">
                         <div class="widget-area">
                             <!--Widget categories-->
@@ -230,13 +232,10 @@
                                 </div>
                                 <div class="">
                                     <ul class="categor-list">
-                                        <li class="cat-item text-muted"><a href="shop-grid-right.html">Jacket</a>(125)</li>
-                                        <li class="cat-item text-muted"><a href="shop-grid-right.html">Jeans</a>(68)</li>
-                                        <li class="cat-item text-muted"><a href="shop-grid-right.html">Sweatshirts</a>(284)</li>
-                                        <li class="cat-item text-muted"><a href="shop-grid-right.html">Trousers</a>(274)</li>
-                                        <li class="cat-item text-muted"><a href="shop-grid-right.html">Kitwears</a>(152)</li>
-                                        <li class="cat-item text-muted"><a href="shop-grid-right.html">Sportswear</a>(302)</li>
-                                        <li class="cat-item text-muted"><a href="shop-grid-right.html">Accessories</a>(168)</li>
+                                        {% for ctg in categories %}
+                                        <li class="cat-item text-muted"><a href="{%  url 'shop' ctg.id %}">{{ ctg.name }}</a>({{ ctg.products.count }})</li>
+                                        {% endfor %}
+                                       
                                     </ul>
                                 </div>
                             </div>
@@ -362,4 +361,10 @@
     </main>
 
 {% endblock content %}
+
+    {% block script%}
+
+ <script src="{%  static 'assets/js/plugins/jquery.theia.sticky.js' %}"></script>
+    {% endblock script%}
+
    

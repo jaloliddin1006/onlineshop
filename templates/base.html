@@ -200,7 +200,7 @@
                                                             </div>
                                                         </li>
                                                     </ul>
-                                                </div>
+                                                    </div>
                                             </li>
                                         {% else %}
                                             <li>
@@ -354,13 +354,14 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>          
     </header>
+    
     <div class="mobile-header-active mobile-header-wrapper-style">
         <div class="mobile-header-wrapper-inner">
             <div class="mobile-header-top">
                 <div class="mobile-header-logo">
-                    <a href="index.html"><img src="{% static 'assets/imgs/theme/logo-default.png' %}" alt="logo"></a>
+                    <a href="/"><img src="{% static 'assets/imgs/theme/logo-default.png' %}" alt="logo"></a>
                 </div>
                 <div class="mobile-menu-close close-style-wrap close-style-position-inherit">
                     <button class="close-style search-close">
@@ -665,6 +666,8 @@
     <script src="{% static 'assets/js/plugins/isotope.js' %}"></script>
     <script src="{% static 'assets/js/plugins/scrollup.js' %}"></script>
     <script src="{% static 'assets/js/plugins/jquery.vticker-min.js' %}"></script>
+    {% block script %}
+    {% endblock script%}
     <!-- Template  JS -->
     <script src="{% static 'assets/js/main.js' %}"></script>
 </body>
