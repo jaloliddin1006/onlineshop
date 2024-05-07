@@ -1,0 +1,65 @@
+﻿{% extends 'base.html' %}
+{% load static %}  
+
+{% block title %}
+    Wishlist page
+{% endblock title %}
+
+{% block content %}
+    <main class="main">
+        <div class="page-header breadcrumb-wrap">
+            <div class="container">
+                <div class="breadcrumb">
+                    <a href="index.html" rel="nofollow">Home</a>
+                    <span></span> Shop
+                    <span></span> Wishlist
+                </div>
+            </div>
+        </div>
+        <section class="mt-60 mb-60">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="table-responsive">
+                            <table class="table shopping-summery text-center">
+                                <thead>
+                                    <tr class="main-heading">
+                                        <th scope="col" colspan="2">Product</th>
+                                        <th scope="col">Price</th>
+                                        <th scope="col">Stock Status</th>
+                                        <th scope="col">Action</th>
+                                        <th scope="col">Remove</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for like in sevimlilar %}
+                                    <tr>
+                                        <td class="image product-thumbnail"><img src="{{like.product.images.first.image_url}}" alt="#"></td>
+                                        <td class="product-des product-name">
+                                            <p class="product-name"><a href="shop-product-right.html">{{like.product.title}}</a></p>
+                                            <p class="font-xs">{{like.product.mini_desc}}
+                                            </p>
+                                        </td>
+                                        <td class="price" data-title="Price"><span>{{like.product.get_new_price}} so'm </span></td>
+                                        <td class="text-center" data-title="Stock">
+                                            <span class="color3 font-weight-bold">{{like.product.status}}</span>
+                                        </td>
+                                        <td class="btn btn-rounded btn-sm" ><a href="{% url 'add_shop_card' like.product.id %}">Add to cart<i class="far fa-shopping-bag mr-5"></i></a></td>
+                                        <td class="action" data-title="Remove"><a href="{% url 'delete_favourite' like.id %}"><i class="fa fa-trash-alt"></i></a></td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+{% endblock content %}
+{% block script %}
+<script src="{% static 'assets/js/plugins/jquery.vts' %}"></script>
+<script src="{% static 'assets/js/plugins/jquery.theia.sticky.icker-min.jjs' %}"></script>
+{% endblock script%}
+    

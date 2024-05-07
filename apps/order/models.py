@@ -12,3 +12,10 @@ class Sevimlilar(BaseModel):
         return f"{self.user} - {self.product}"
     
     
+class Order(BaseModel):
+    user = models.ForeignKey('accounts.User', on_delete=models.CASCADE, related_name='orders')
+    product = models.ForeignKey('products.Product', on_delete=models.CASCADE)
+    quantity = models.IntegerField(default=1)
+
+    def __str__(self):
+        return f"{self.user} - {self.product}"

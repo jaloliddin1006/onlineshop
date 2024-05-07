@@ -116,7 +116,7 @@ class Product(BaseModel):
             product_price = self.sizes.all().first().price
             discount = (100 - self.percentage) / 100 * product_price
             return round(discount, 2)
-        return 0
+        return self.get_price
 
     @property
     def get_reviews_count(self):
