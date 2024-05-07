@@ -125,9 +125,10 @@ class Product(BaseModel):
 
     @property
     def get_avg_rating(self):
-        rating = self.reviews.all().aggregate(rating_avg=Avg('rating', default=0))
-        return round(rating['rating_avg'], 1)
+        rating = self.reviews.all().aggregate(rating_avg=Avg('rate', default=0))
+        return round(rating['rating_avg'], 1) * 20 # foiz
 
+'''select avg(rate) as rating_avg from products_review where product_id = 1'''
 
 class ProductSize(BaseModel):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='sizes')

@@ -111,7 +111,7 @@
                                 <div class="product-cart-wrap mb-30">
                                     <div class="product-img-action-wrap">
                                         <div class="product-img product-img-zoom">
-                                            <a href="shop-product-right.html">
+                                            <a href="{% url 'detail' product.id %}">
                                                 <img class="default-img" src="{{ product.images.first.image_url }}" alt="">
                                                 <img class="hover-img" src="{{ product.images.last.image_url }}" alt="">
                                             </a>
@@ -127,9 +127,9 @@
                                     </div>
                                     <div class="product-content-wrap">
                                         <div class="product-category">
-                                            <a href="shop-grid-right.html">{{ product.categories.last.name }}</a>
+                                            <a href="{% url 'detail' product.id %}">{{ product.categories.last.name }}</a>
                                         </div>
-                                        <h2><a href="shop-product-right.html">{{ product.title }}</a></h2>
+                                        <h2><a href="{% url 'detail' product.id %}">{{ product.title }}</a></h2>
                                         <div class="rating-result" title="90%">
                                             <span>
                                                 <span>({{ product.get_reviews_count }} sharhlar)</span>
